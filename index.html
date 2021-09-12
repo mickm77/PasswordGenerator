@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Password Generator</title>
+    <style>
+      /* keeps it simple in one file... but eurgghghhh; */
+
+      :root {
+        --darkest-blue: #0e0c2e;
+        --dark-blue: #21203e;
+        --light-blue: #6097f5;
+        --gray: #29272e;
+        --light-gray: #74798b;
+
+        --background: var(--darkest-blue);
+        --radius: 6px;
+        --spacer: 32px;
+      }
+
+      body {
+        background-color: var(--light-blue);
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      h1 {
+        text-align: center;
+        margin: 0;
+        margin-bottom: var(--spacer);
+      }
+
+      .container {
+        width: 350px;
+        padding: 16px 32px;
+        margin: 0 auto;
+        background-color: var(--background);
+        color: #aaa;
+        border-radius: var(--radius);
+      }
+
+      .infoText {
+        display: flex;
+        flex-flow: column nowrap;
+        font-weight: 600;
+        font-size: 0.7rem;
+        margin: 4px 0;
+      }
+      .infoText + .infoText {
+        margin-top: var(--spacer);
+      }
+
+      .info {
+        color: #efefef;
+        font-weight: 700;
+        text-align: center;
+      }
+
+      .inputContainer {
+        position: relative;
+        background-color: var(--dark-blue);
+        font-size: 1.5em;
+        padding: 8px;
+        margin-top: 6px;
+        border-radius: var(--radius);
+      }
+
+      .rangeLayout {
+        display: grid;
+        grid-template-columns: 30px auto 30px;
+      }
+
+      .checkLayout {
+      }
+
+      .checkLayout input {
+        visibility: hidden;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+
+      .checkLayout label {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .switch {
+        position: relative;
+        width: 50px;
+        border-radius: 15px;
+        box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.4);
+        background: var(--gray);
+        transition: all 0.3s;
+      }
+
+      .switch::before {
+        content: "";
+        position: absolute;
+        left: 4px;
+        top: 2px;
+        width: 18px;
+        height: 18px;
+        background: white;
+        border-radius: 50%;
+        z-index: 1;
+        transition: all 0.3s;
+      }
+
+      .checkLayout .check:checked + label span:last-child {
+        background-color: yellowgreen;
+      }
+      .checkLayout .check:checked + label span:last-child::before {
+        transform: translateX(24px);
+      }
+      label:active .check:checked span:last-child::before {
+        width: 24px;
+      }
+
+      #lengthRange {
+        margin-top: 4px;
+      }
+
+      .infoText + #btnGenerate {
+        margin-top: var(--spacer);
+      }
+
+      #btnGenerate {
+        width: 100%;
+        padding: 16px;
+        background: rgb(115, 117, 218);
+        background: linear-gradient(
+          90deg,
+          rgba(115, 117, 218, 1) 0%,
+          rgba(113, 74, 160, 1) 100%
+        );
+        border: none;
+        border-radius: var(--radius);
+        font-weight: 700;
+        color: #efefef;
+      }
+
+      .password {
+        display: grid;
+        grid-template-columns: auto 48px;
+        margin: 0 0 12px 0;
+        padding: 12px 8px;
+        background-color: var(--gray);
+        border-radius: var(--radius);
+        color: #888;
+        text-align: center;
+      }
+
+      #password {
+        background-color: transparent;
+        border: none;
+        color: #efefef;
+        text-align: center;
+      }
+
+      #password::placeholder {
+        color: rgba(128, 128, 145, 0.2);
+        text-align: center;
+      }
+
+      #copy {
+        background-color: var(--gray);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 4px;
+        text-align: center;
+        cursor: pointer;
+        stroke: var(--light-gray);
+        border: none;
+        border-radius: var(--radius);
+        fill: var(--light-gray);
+        margin-left: 8px;
+      }
+
+      #copy svg {
+        width: 24px;
+        height: 24px;
+      }
+
+      #copy:hover {
+        background-color: #6097f5;
+        background-color: var(--light-gray);
+        stroke: #efefef;
+        fill: #efefef;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Password Generator</h1>
+      <div class="password">
+        <input id="password" placeholder="Click GENERATE PASSWORD" />
+        <button id="copy">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            title="Click to copy to clipboard"
+          >
+            <path
+              d="M10 19h10v1h-10v-1zm14-13v18h-18v-6h-6v-18h18v6h6zm-18 0h10v-4h-14v14h4v-10zm16 2h-1.93c-.669 0-1.293.334-1.664.891l-1.406 2.109h-3.93l-1.406-2.109c-.371-.557-.995-.891-1.664-.891h-2v14h14v-14zm-12 6h10v-1h-10v1zm0 3h10v-1h-10v1z"
+            />
+          </svg>
+        </button>
+      </div>
+      <section class="infoText">
+        <label for="lengtRange">
+          LENGTH: <span class="info" id="length">12</span>
+          <div class="inputContainer rangeLayout">
+            <span class="info">4</span>
+            <input
+              type="range"
+              min="4"
+              max="32"
+              value="12"
+              class="slider"
+              id="lengthRange"
+            />
+            <span class="info">32</span>
+          </div>
+        </label>
+      </section>
+      <section class="infoText">
+        <span>SETTINGS</span>
+        <div class="inputContainer checkLayout">
+          <input type="checkbox" class="check" id="upper" />
+          <label for="upper">
+            <span class="labelText">Include Uppercase</span>
+            <span class="switch"></span>
+          </label>
+        </div>
+        <div class="inputContainer checkLayout">
+          <input type="checkbox" class="check" id="lower" />
+          <label for="lower">
+            <span>Include Lowercase</span>
+            <span class="switch"></span>
+          </label>
+        </div>
+        <div class="inputContainer checkLayout">
+          <input type="checkbox" class="check" id="number" />
+          <label for="number">
+            <span>Include Numbers</span>
+            <span class="switch"></span>
+          </label>
+        </div>
+        <div class="inputContainer checkLayout">
+          <input type="checkbox" class="check" id="symbols" />
+          <label for="symbols">
+            <span>Include Symbols</span>
+            <span class="switch"></span>
+          </label>
+        </div>
+      </section>
+      <button id="btnGenerate">GENERATE PASSWORD</button>
+    </div>
+  </body>
+
+  <script>
+    let data = {
+      len: 12,
+      upper: false,
+      lower: false,
+      number: false,
+      symbols: false,
+    };
+
+    const updateLen = (e) => {
+      data.len = e.target.value;
+      document.getElementById("length").innerText = data.len;
+      console.log(e.target.value);
+      console.log(data);
+    };
+    document.getElementById("lengthRange").onchange = updateLen;
+
+    const generatePassword = () => {
+      console.log("clicked");
+      let source = "";
+
+      if (data.upper) source += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      if (data.lower) source += "abcdefghijklmnopqrstuvwxyz";
+      if (data.number) source += "0123456789";
+      if (data.symbols) source += "!£$%^&*()_+-=#@?,.";
+
+      console.log(source);
+      if (source.length === 0) return;
+
+      function getRandomInt(max) {
+        return Math.floor(Math.random() * max);
+      }
+      let password = "";
+      for (let i = 0; i < data.len; i++) {
+        password += source[getRandomInt(source.length)];
+      }
+      console.log(password);
+      document.getElementById("password").value = password;
+    };
+    document.getElementById("btnGenerate").onclick = generatePassword;
+
+    const checks = document.getElementsByClassName("check");
+    [].forEach.call(checks, (el) => {
+      el.onchange = (e) => {
+        data[e.target.id] = e.target.checked;
+      };
+    });
+
+    function copy() {
+      var copyText = document.querySelector("#password");
+      copyText.select();
+      document.execCommand("copy");
+    }
+
+    document.querySelector("#copy").addEventListener("click", copy);
+  </script>
+</html>

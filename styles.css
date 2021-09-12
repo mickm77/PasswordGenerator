@@ -1,0 +1,181 @@
+:root {
+	--darkest-blue: #0e0c2e;
+	--dark-blue: #21203e;
+	--light-blue: #6097f5;
+	--gray: #29272e;
+	--light-gray: #74798b;
+
+	--background: var(--darkest-blue);	
+	--radius: 6px;
+	--spacer: 32px;
+}
+
+body {
+	background-color: var(--light-blue);
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+h1 {
+	text-align: center;
+	margin: 0;	
+	margin-bottom: var(--spacer);
+}
+
+.container {
+	width: 350px;
+	padding: 16px 32px;
+	margin: 0 auto;
+	background-color: var(--background);
+	color: #aaa;
+	border-radius: var(--radius);
+
+}
+
+.infoText {
+	display: flex;
+	flex-flow: column nowrap;
+	font-weight: 600;
+	font-size: 0.7rem;
+	margin: 4px 0;
+}
+.infoText + .infoText {
+	margin-top: var(--spacer);
+}
+
+.info {
+	color: #efefef;
+	font-weight: 700;
+	text-align: center;
+}
+
+.inputContainer {
+	position: relative;
+	background-color: var(--dark-blue);
+	font-size: 1.5em;
+	padding: 8px;
+	margin-top: 6px;
+	border-radius: var(--radius);
+}
+
+.rangeLayout {
+	display: grid;
+	grid-template-columns: 30px auto 30px;
+}
+
+.checkLayout {
+}
+
+.checkLayout input {
+	visibility: hidden;	
+	position: absolute;
+	top:0;
+	left: 0;
+}
+
+.checkLayout label {
+	display: flex;
+	justify-content: space-between;
+}
+
+.switch {
+	position: relative;
+	width: 50px;
+	border-radius: 15px;
+	box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.4);
+	background: var(--gray);
+	transition: all 0.3s;
+}
+
+.switch::before {
+	content: "";
+	position: absolute;
+}
+
+.switch::before {
+	left: 4px;
+	top: 2px;
+	width: 18px;
+	height: 18px;
+	background: white;
+	border-radius: 50%;
+	z-index: 1;
+	transition: all 0.3s;
+}
+
+.checkLayout .check:checked + label span:last-child {
+	background-color: yellowgreen;
+}
+.checkLayout .check:checked + label span:last-child::before {
+	transform: translateX(24px);
+}
+label:active .check:checked span:last-child::before  {
+	width: 24px;
+}
+
+#lengthRange {
+	margin-top: 4px;
+}
+
+.infoText + #btnGenerate {
+	margin-top: var(--spacer);
+}
+
+#btnGenerate {
+	width: 100%;
+	padding: 16px;
+	background: rgb(115,117,218);
+	background: linear-gradient(90deg, rgba(115,117,218,1) 0%, rgba(113,74,160,1) 100%);
+	border: none;
+	border-radius: var(--radius);
+	font-weight: 700;
+	color: #efefef;
+}
+
+.password {
+	display: grid;
+	grid-template-columns: auto 48px;
+	margin: 0 0 12px 0;
+	padding: 12px 8px;
+	background-color: var(--gray);	
+	border-radius: var(--radius);
+	color: #888;
+	text-align: center;
+}
+
+#password {
+	background-color: transparent;
+	border: none;
+	color: #efefef;
+	text-align: center;
+}
+
+#password::placeholder {
+	color:rgba(128, 128, 145, 0.2);
+	text-align: center;
+}
+
+#copy {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 4px;
+	text-align: center;
+	cursor: pointer;
+	stroke: var(--light-gray);
+	border: none;
+	border-radius: var(--radius);
+	fill: var(--light-gray);
+	margin-left: 8px;
+}
+
+#copy svg {
+	width: 24px;
+	height: 24px;
+}
+
+#copy:hover {
+	background-color: #6097f5;
+	background-color: var(--light-gray);
+	stroke: #efefef;
+	fill:#efefef;
+}
